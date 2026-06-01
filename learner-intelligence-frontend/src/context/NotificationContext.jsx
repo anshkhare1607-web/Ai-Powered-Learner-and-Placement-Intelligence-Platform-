@@ -5,7 +5,8 @@ import { useLocation } from "react-router-dom";
 const NotificationContext = createContext();
 
 // Create socket outside component to prevent multiple instances
-const socket = io("http://localhost:3001", { autoConnect: false });
+// const socket = io("http://localhost:3001", { autoConnect: false });
+const socket = io(import.meta.env.VITE_SOCKET_URL || "http://localhost:3001", { autoConnect: false });
 
 export const NotificationProvider = ({ children }) => {
   const [liveNotifications, setLiveNotifications] = useState([]);

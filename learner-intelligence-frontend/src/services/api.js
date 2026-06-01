@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8081"
+    baseURL: import.meta.env.VITE_API_URL || "http://localhost:8081"
+
 });
 
 // Automatically add the JWT token to the headers of every request
@@ -18,5 +19,4 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 export default api;

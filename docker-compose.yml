@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # 1. MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: learner_db_mysql
+    network_mode: host
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: student
+      MYSQL_DATABASE: learner_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # 2. Python FastAPI ML Service
+  python-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    container_name: learner_python_service
+    network_mode: host
+    restart: always
+    depends_on:
+      - db
+
+  # 3. Node.js Notification Service
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    container_name: learner_notification_service
+    network_mode: host
+    restart: always
+    depends_on:
+      - db
+
+  # 4. Spring Boot Java Backend
+  spring-backend:
+    build:
+      context: ./backend/learner-placement-backend
+      dockerfile: Dockerfile
+    container_name: learner_spring_backend
+    network_mode: host
+    restart: always
+    depends_on:
+      - db
+      - python-service
+      - notification-service
+
+volumes:
+  mysql_data:

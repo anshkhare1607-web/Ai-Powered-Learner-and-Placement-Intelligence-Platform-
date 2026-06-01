@@ -8,14 +8,16 @@ const server = http.createServer(app);
 
 // Allow CORS from frontend (5174/5173) and backend (8081)
 app.use(cors({
-    origin: ['http://localhost:5174', 'http://localhost:5173', 'http://localhost:8081'],
+    // origin: ['http://localhost:5174', 'http://localhost:5173', 'http://localhost:8081'],
+    origin: '*',
     methods: ['GET', 'POST']
 }));
 app.use(express.json());
 
 const io = new Server(server, {
     cors: {
-        origin: ['http://localhost:5174', 'http://localhost:5173'],
+        // origin: ['http://localhost:5174', 'http://localhost:5173'],
+        origin: '*',
         methods: ['GET', 'POST']
     }
 });
